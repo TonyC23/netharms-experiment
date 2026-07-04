@@ -1,0 +1,98 @@
+{
+  "freeform": {
+    "label": "freeform",
+    "recall_overall": 0.5,
+    "recall_task": 0.5,
+    "recall_emergent": 0.5,
+    "precision": 0.8888888888888888,
+    "correct": 8,
+    "false_positives": 1,
+    "gt_total": 16,
+    "per_plan": [
+      [
+        "P1-research-market",
+        3,
+        5,
+        0
+      ],
+      [
+        "P2-research-policy",
+        2,
+        4,
+        0
+      ],
+      [
+        "P3-coding-refactor",
+        2,
+        3,
+        0
+      ],
+      [
+        "P4-research-news",
+        1,
+        3,
+        0
+      ],
+      [
+        "P5-research-wellformed",
+        0,
+        0,
+        1
+      ],
+      [
+        "P6-coding-needle",
+        0,
+        1,
+        0
+      ]
+    ]
+  },
+  "structured": {
+    "label": "structured",
+    "recall_overall": 0.9375,
+    "recall_task": 0.875,
+    "recall_emergent": 1.0,
+    "precision": 0.8823529411764706,
+    "correct": 15,
+    "false_positives": 2,
+    "gt_total": 16,
+    "per_plan": [
+      [
+        "P1-research-market",
+        5,
+        5,
+        0
+      ],
+      [
+        "P2-research-policy",
+        4,
+        4,
+        0
+      ],
+      [
+        "P3-coding-refactor",
+        3,
+        3,
+        1
+      ],
+      [
+        "P4-research-news",
+        2,
+        3,
+        0
+      ],
+      [
+        "P5-research-wellformed",
+        0,
+        0,
+        1
+      ],
+      [
+        "P6-coding-needle",
+        1,
+        1,
+        0
+      ]
+    ]
+  }
+}

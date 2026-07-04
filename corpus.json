@@ -1,0 +1,468 @@
+{
+  "schema_note": "Each plan is the kind of object an orchestrator emits before spawning. 'ground_truth' lists injected failure IDs (stripped before detection). parallel_group: subtasks sharing a value run concurrently.",
+  "plans": [
+    {
+      "id": "P1-research-market",
+      "domain": "research",
+      "task": "Write a briefing on the competitive landscape for consumer EV home chargers in the EU, 2024 onward only.",
+      "orchestrator_config": {
+        "budget_tokens": 400000,
+        "stop_criteria": "all subagents return",
+        "synthesis_strategy": "concatenate subagent summaries and rewrite into one briefing",
+        "follow_up": "disabled"
+      },
+      "subtasks": [
+        {
+          "id": "s1",
+          "objective": "Research the main EV home charger vendors and their products",
+          "scope_in": "vendors, products, pricing",
+          "scope_out": "",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "summary"
+          ]
+        },
+        {
+          "id": "s2",
+          "objective": "Research EV home charger market share and pricing in the EU",
+          "scope_in": "market share, pricing, vendors",
+          "scope_out": "",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "summary"
+          ]
+        },
+        {
+          "id": "s3",
+          "objective": "Research EU regulations affecting home chargers",
+          "scope_in": "standards, subsidies, regulation",
+          "scope_out": "",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "summary"
+          ]
+        },
+        {
+          "id": "s4",
+          "objective": "Synthesize into a briefing",
+          "scope_in": "all subagent outputs",
+          "scope_out": "",
+          "inputs": [
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "parallel_group": 2,
+          "output_schema": [
+            "briefing"
+          ],
+          "is_join": true
+        }
+      ],
+      "ground_truth": [
+        "F-T3-OVERLAP",
+        "F-C3-VAGUE",
+        "F-CONFLICT",
+        "F-C1-CONSTRAINT-DROP"
+      ],
+      "ground_truth_notes": {
+        "F-T3-OVERLAP": "s1 and s2 both own 'vendors'/'pricing' with no de-dup.",
+        "F-C3-VAGUE": "s1/s2/s3 objectives are 'research X' with no success criteria or out-of-scope.",
+        "F-CONFLICT": "join s4 consumes overlapping s1/s2; synthesis_strategy concatenates+rewrites with no conflict handling (e.g., disagreeing market-share numbers collapse silently).",
+        "F-NOCONF": "no subagent output_schema carries confidence/gaps.",
+        "F-C1-CONSTRAINT-DROP": "'2024 onward only' constraint appears in no subtask scope/context."
+      }
+    },
+    {
+      "id": "P2-research-policy",
+      "domain": "research",
+      "task": "Assess the likely impact of a proposed carbon border tax on three named exporting countries, with sources.",
+      "orchestrator_config": {
+        "budget_tokens": 500000,
+        "stop_criteria": "all subagents return",
+        "synthesis_strategy": "compose impact assessment from subagent findings",
+        "follow_up": "disabled"
+      },
+      "subtasks": [
+        {
+          "id": "s1",
+          "objective": "Characterise the proposed carbon border tax mechanism and scope",
+          "scope_in": "tax design, covered sectors, timeline",
+          "scope_out": "country-specific effects",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "findings"
+          ]
+        },
+        {
+          "id": "s2",
+          "objective": "Estimate impact on Country A's covered-sector exports",
+          "scope_in": "Country A trade exposure under the tax",
+          "scope_out": "other countries",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "findings"
+          ]
+        },
+        {
+          "id": "s3",
+          "objective": "Estimate impact on Country B's covered-sector exports",
+          "scope_in": "Country B trade exposure under the tax",
+          "scope_out": "other countries",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "findings"
+          ]
+        },
+        {
+          "id": "s4",
+          "objective": "Estimate impact on Country C's covered-sector exports",
+          "scope_in": "Country C trade exposure under the tax",
+          "scope_out": "other countries",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "findings"
+          ]
+        },
+        {
+          "id": "s5",
+          "objective": "Verify all numeric claims and compose assessment",
+          "scope_in": "all findings",
+          "scope_out": "",
+          "inputs": [
+            "s1",
+            "s2",
+            "s3",
+            "s4"
+          ],
+          "parallel_group": 2,
+          "output_schema": [
+            "assessment"
+          ],
+          "is_join": true,
+          "is_verify": true
+        }
+      ],
+      "ground_truth": [
+        "F-LATENTDEP",
+        "F-COVHOLE",
+        "F-NOPROV",
+        "F-PROVSTARVE"
+      ],
+      "ground_truth_notes": {
+        "F-LATENTDEP": "s2/s3/s4 need the 'covered sectors' defined by s1, but all four share parallel_group 1, so country agents run before the tax scope is known.",
+        "F-COVHOLE": "no step reconciles delivered coverage vs the task; if a country agent silently under-covers a sector the assessment still reads complete.",
+        "F-NOPROV": "subagent output_schema is 'findings' with no source/citation field, despite 'with sources' in the task.",
+        "F-PROVSTARVE": "s5 is asked to verify numeric claims but upstream provides no provenance to verify against -> verification fails open."
+      }
+    },
+    {
+      "id": "P3-coding-refactor",
+      "domain": "coding",
+      "task": "Migrate the service from REST to gRPC across the api, client, and tests packages; keep the public behaviour identical; do not change the database schema.",
+      "orchestrator_config": {
+        "budget_tokens": 600000,
+        "stop_criteria": "all subagents return",
+        "synthesis_strategy": "merge diffs from subagents and run the build",
+        "follow_up": "disabled"
+      },
+      "subtasks": [
+        {
+          "id": "s1",
+          "objective": "Convert the api package endpoints to gRPC services",
+          "scope_in": "api package",
+          "scope_out": "client, tests",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "diff"
+          ]
+        },
+        {
+          "id": "s2",
+          "objective": "Convert the client package to call gRPC",
+          "scope_in": "client package",
+          "scope_out": "api, tests",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "diff"
+          ]
+        },
+        {
+          "id": "s3",
+          "objective": "Update the tests package for gRPC",
+          "scope_in": "tests package",
+          "scope_out": "api, client",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "diff"
+          ]
+        },
+        {
+          "id": "s4",
+          "objective": "Merge diffs and run the build",
+          "scope_in": "all diffs",
+          "scope_out": "",
+          "inputs": [
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "parallel_group": 2,
+          "output_schema": [
+            "merged_diff",
+            "build_result"
+          ],
+          "is_join": true
+        }
+      ],
+      "ground_truth": [
+        "F-T2-OMIT",
+        "F-LATENTDEP",
+        "F-C1-CONSTRAINT-DROP"
+      ],
+      "ground_truth_notes": {
+        "F-T2-OMIT": "No subtask defines the shared .proto / service contract; each package converts against an undefined interface.",
+        "F-LATENTDEP": "client (s2) and tests (s3) depend on the gRPC interface produced by api (s1), but all three are in parallel_group 1.",
+        "F-C1-CONSTRAINT-DROP": "'keep public behaviour identical' and 'do not change DB schema' appear in no subtask scope; nothing guards them."
+      }
+    },
+    {
+      "id": "P4-research-news",
+      "domain": "research",
+      "task": "Summarise what happened at yesterday's product launch event.",
+      "orchestrator_config": {
+        "budget_tokens": 300000,
+        "stop_criteria": "synthesis judges coverage complete",
+        "synthesis_strategy": "merge subagent notes",
+        "follow_up": "enabled: spawn more subagents on any gap synthesis finds"
+      },
+      "subtasks": [
+        {
+          "id": "s1",
+          "objective": "Find the event date and official announcement",
+          "scope_in": "single fact: date + official post",
+          "scope_out": "",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "note"
+          ]
+        },
+        {
+          "id": "s2",
+          "objective": "Gather press coverage of the event",
+          "scope_in": "press articles",
+          "scope_out": "",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "note"
+          ]
+        },
+        {
+          "id": "s3",
+          "objective": "Gather social/community reaction",
+          "scope_in": "social reaction",
+          "scope_out": "",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "note"
+          ]
+        },
+        {
+          "id": "s4",
+          "objective": "Merge and summarise",
+          "scope_in": "all notes",
+          "scope_out": "",
+          "inputs": [
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "parallel_group": 2,
+          "output_schema": [
+            "summary"
+          ],
+          "is_join": true
+        }
+      ],
+      "ground_truth": [
+        "F-RUNAWAY",
+        "F-T5-OVERKILL",
+        "F-CONFLICT"
+      ],
+      "ground_truth_notes": {
+        "F-RUNAWAY": "follow_up enabled + stop_criteria is 'synthesis judges complete' with no global budget/max-depth -> unbounded gap-chasing.",
+        "F-T5-OVERKILL": "s1 is a single atomic lookup (date+post) spawned as its own parallel subagent.",
+        "F-CONFLICT": "join s4 merges press (s2) and social (s3) which routinely disagree on facts; no conflict handling."
+      }
+    },
+    {
+      "id": "P5-research-wellformed",
+      "domain": "research",
+      "task": "Compare the headline specs of three named laptops and recommend one for a video editor, citing sources.",
+      "orchestrator_config": {
+        "budget_tokens": 350000,
+        "stop_criteria": "all subagents return; max 1 follow-up wave; hard token cap enforced by orchestrator",
+        "synthesis_strategy": "build a spec table; where subagents disagree on a value, surface both with sources and flag the conflict; reconcile coverage against the three requested laptops before composing",
+        "follow_up": "enabled with max-depth 1 under the global token cap"
+      },
+      "subtasks": [
+        {
+          "id": "s1",
+          "objective": "Collect headline specs for Laptop A (CPU, GPU, RAM, display, price) for a video-editing use case",
+          "scope_in": "Laptop A only",
+          "scope_out": "B, C",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "spec_fields",
+            "source_url",
+            "confidence",
+            "gaps"
+          ]
+        },
+        {
+          "id": "s2",
+          "objective": "Collect headline specs for Laptop B (CPU, GPU, RAM, display, price) for a video-editing use case",
+          "scope_in": "Laptop B only",
+          "scope_out": "A, C",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "spec_fields",
+            "source_url",
+            "confidence",
+            "gaps"
+          ]
+        },
+        {
+          "id": "s3",
+          "objective": "Collect headline specs for Laptop C (CPU, GPU, RAM, display, price) for a video-editing use case",
+          "scope_in": "Laptop C only",
+          "scope_out": "A, B",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "spec_fields",
+            "source_url",
+            "confidence",
+            "gaps"
+          ]
+        },
+        {
+          "id": "s4",
+          "objective": "Build spec table, reconcile coverage, surface conflicts with sources, recommend",
+          "scope_in": "all spec_fields + sources + confidence",
+          "scope_out": "",
+          "inputs": [
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "parallel_group": 2,
+          "output_schema": [
+            "table",
+            "recommendation",
+            "flagged_conflicts",
+            "coverage_report"
+          ],
+          "is_join": true
+        }
+      ],
+      "ground_truth": [],
+      "ground_truth_notes": {
+        "design": "Precision control. Genuinely independent parallel subagents (one laptop each, no cross-dependency), conflict handling present, coverage reconciliation present, provenance+confidence in schema, bounded budget + follow-up. A checklist that over-flags will likely raise a spurious F-CONFLICT or F-LATENTDEP here."
+      }
+    },
+    {
+      "id": "P6-coding-needle",
+      "domain": "coding",
+      "task": "Add rate limiting to the public API: implement middleware, add config, and document it. Keep changes backward compatible.",
+      "orchestrator_config": {
+        "budget_tokens": 300000,
+        "stop_criteria": "all subagents return; global token cap enforced",
+        "synthesis_strategy": "merge diffs, run build and tests, report failures with diffs",
+        "follow_up": "disabled"
+      },
+      "subtasks": [
+        {
+          "id": "s1",
+          "objective": "Implement the rate-limit middleware using the limits in the config module (keys, windows, defaults)",
+          "scope_in": "middleware",
+          "scope_out": "config values, docs",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "diff",
+            "confidence",
+            "notes"
+          ]
+        },
+        {
+          "id": "s2",
+          "objective": "Define the rate-limit config schema and default values",
+          "scope_in": "config module",
+          "scope_out": "middleware, docs",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "diff",
+            "confidence",
+            "notes"
+          ]
+        },
+        {
+          "id": "s3",
+          "objective": "Document the rate-limiting feature and its config",
+          "scope_in": "docs",
+          "scope_out": "code",
+          "inputs": [],
+          "parallel_group": 1,
+          "output_schema": [
+            "diff",
+            "confidence",
+            "notes"
+          ]
+        },
+        {
+          "id": "s4",
+          "objective": "Merge diffs, run build + tests",
+          "scope_in": "all diffs",
+          "scope_out": "",
+          "inputs": [
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "parallel_group": 2,
+          "output_schema": [
+            "merged_diff",
+            "build_result",
+            "test_result"
+          ],
+          "is_join": true
+        }
+      ],
+      "ground_truth": [
+        "F-LATENTDEP",
+        "F-C1-CONSTRAINT-DROP"
+      ],
+      "ground_truth_notes": {
+        "F-LATENTDEP": "s1 middleware is written against the config schema/defaults that s2 defines (objective explicitly references 'the limits in the config module'), but s1 and s2 share parallel_group 1. Otherwise the plan is clean (bounded budget, provenance-free but it's code with build/test gating, confidence present, docs scoped). The single needle in an otherwise tidy plan."
+      }
+    }
+  ],
+  "_gt_version": "v2: severity/relevance-gated. P1 dropped F-NOCONF (concatenate synthesis does not weight inputs). P6 added F-C1-CONSTRAINT-DROP (explicit backward-compat constraint unpropagated)."
+}

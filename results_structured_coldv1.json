@@ -1,0 +1,59 @@
+{
+  "_protocol": "COLD-INSTANCE RUN. Condition B (NET-HARMS structured + topology pass). Independent fresh agent instance, blind to ground truth, no file access. Mapped under fixed ground truth; detected IDs not in a plan's ground truth score as false positives via harness (det - gt). Raw findings in results_raw_cold.md.",
+  "P1-research-market": {
+    "detected": [
+      "F-T3-OVERLAP",
+      "F-NOCONF",
+      "F-C1-CONSTRAINT-DROP",
+      "F-CONFLICT",
+      "F-NOPROV",
+      "F-COVHOLE"
+    ],
+    "false_positives": [],
+    "notes": "4/5 GT (missed C3). NOPROV+COVHOLE score as FP vs fixed GT but are arguably-correct (bare summary schema; no coverage reconciliation) -> precision lower bound."
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-NOPROV",
+      "F-PROVSTARVE",
+      "F-NOCONF"
+    ],
+    "false_positives": [],
+    "notes": "3/4 GT (missed COVHOLE). NOCONF scores FP vs GT but defensible."
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-C1-CONSTRAINT-DROP",
+      "F-T2-OMIT",
+      "F-NOCONF"
+    ],
+    "false_positives": [],
+    "notes": "3/3 GT. NOCONF scores FP vs GT (diffs lack assumptions field) - borderline."
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-RUNAWAY",
+      "F-CONFLICT",
+      "F-NOPROV",
+      "F-NOCONF",
+      "F-COVHOLE"
+    ],
+    "false_positives": [],
+    "notes": "2/3 GT incl. the press/social conflict freeform missed; missed T5. NOPROV/NOCONF/COVHOLE score FP vs GT, all arguably-correct for a news task -> precision lower bound."
+  },
+  "P5-research-wellformed": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "No issues flagged - did not over-flag the control despite join/fan-out topology."
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-C1-CONSTRAINT-DROP"
+    ],
+    "false_positives": [],
+    "notes": "Caught the needle. C1 (backward-compat not propagated) scores FP vs GT but is arguably a real catch I under-labeled."
+  }
+}

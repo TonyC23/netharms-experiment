@@ -1,0 +1,41 @@
+{
+  "_protocol": "Detector = llama3.1:8b (freeform), MAPPER = Claude (hand re-map of results_raw.json). Isolates llama detection quality from the weak llama auto-mapper. 'detected' holds every catalogue ID llama's prose genuinely asserts (hits + spurious); harness scores det-gt as FP. Strict mapping: generic boilerplate (error handling, monitoring, budget) = OTHER, not scored.",
+  "P1-research-market": {
+    "detected": [
+      "F-T3-OVERLAP",
+      "F-CONFLICT"
+    ],
+    "false_positives": [],
+    "notes": "Named 'overlapping/conflicting results, same parallel group, inconsistencies during synthesis' = T3-OVERLAP + CONFLICT. Missed C3-VAGUE, C1-DROP (date). Rest was generic OTHER."
+  },
+  "P2-research-policy": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "All 10 findings generic (error handling, logging, stop criteria). Did NOT articulate the s1 latent dependency, coverage hole, missing provenance, or verify-starvation. 0 real catches."
+  },
+  "P3-coding-refactor": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "15 generic findings (budget, deadlock, security, scalability). Never named the missing proto contract, the client/tests->api dependency, or the dropped constraints."
+  },
+  "P4-research-news": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "Noted follow-up 'criteria unclear' but not unboundedness (RUNAWAY not credited, strict); generic join worry, not press/social CONFLICT. Missed T5."
+  },
+  "P5-research-wellformed": {
+    "detected": [
+      "F-CONFLICT",
+      "F-T3-OVERLAP"
+    ],
+    "false_positives": [],
+    "notes": "CONTROL PLAN. False-alarmed: asserted conflict-resolution inadequate (handling is present) and data duplication across independent laptops. 2 FPs."
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-LATENTDEP"
+    ],
+    "false_positives": [],
+    "notes": "Generic but valid: 'dependencies between tasks within parallel groups not accounted for' = LATENTDEP (lenient credit). Missed C1-DROP (backward compat)."
+  }
+}

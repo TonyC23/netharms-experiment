@@ -1,0 +1,42 @@
+{
+  "_protocol": "Detector = Claude cold instance (freeform), reconstructed canonical. Scored vs GT v2.",
+  "P1-research-market": {
+    "detected": [
+      "F-T3-OVERLAP",
+      "F-C1-CONSTRAINT-DROP",
+      "F-CONFLICT"
+    ],
+    "false_positives": []
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-PROVSTARVE",
+      "F-NOPROV"
+    ],
+    "false_positives": []
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-LATENTDEP"
+    ],
+    "false_positives": []
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-RUNAWAY"
+    ],
+    "false_positives": []
+  },
+  "P5-research-wellformed": {
+    "detected": [],
+    "false_positives": []
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-LATENTDEP"
+    ],
+    "false_positives": []
+  }
+}

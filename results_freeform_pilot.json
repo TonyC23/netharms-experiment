@@ -1,0 +1,47 @@
+{
+  "_protocol": "Condition A (freeform strong-baseline). Detector saw corpus_blind.json only. 'detected' = catalogue IDs the review's findings map to; 'false_positives' = findings asserting a problem that is not present.",
+  "P1-research-market": {
+    "detected": [
+      "F-T3-OVERLAP",
+      "F-C3-VAGUE",
+      "F-CONFLICT"
+    ],
+    "false_positives": [],
+    "notes": "Caught the s1/s2 overlap and vague objectives easily; once overlap was noted, flagged that s4 would not reconcile disagreeing figures. Did NOT notice the '2024 onward' constraint was unpropagated, nor the missing confidence field (schema not audited)."
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-NOPROV",
+      "F-PROVSTARVE"
+    ],
+    "false_positives": [],
+    "notes": "'with sources' was salient -> noticed subagents capture no sources, and adjacently that s5 can't really verify. Missed the latent dependency (country agents need s1's 'covered sectors' but run in the same wave) and the coverage-hole risk."
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-LATENTDEP"
+    ],
+    "false_positives": [],
+    "notes": "Engineer's instinct caught both: 'where is the shared .proto contract?' and 'client/tests can't convert before the api interface exists'. Missed the dropped 'identical behaviour / no schema change' constraints."
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-RUNAWAY"
+    ],
+    "false_positives": [],
+    "notes": "Flagged unbounded gap-chasing (cost-salient). Did not flag s1 over-decomposition, and missed that press vs social sources routinely conflict at the join."
+  },
+  "P5-research-wellformed": {
+    "detected": [],
+    "false_positives": [
+      "F-CONFLICT"
+    ],
+    "notes": "Read the plan as broadly sound but speculatively warned the parallel agents 'might conflict' at synthesis -- but conflict handling is in fact present, so this is a false positive."
+  },
+  "P6-coding-needle": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "Clean-looking plan lulled the review; missed that s1 middleware is written against config defaults s2 defines while both run in the same wave. (High run-to-run variance case.)"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "_protocol": "Gated structured, GATE #1 (gate applied globally incl. 'report only high/medium, well-formed yields nothing'). Cold instance, blind, no file access. Scored against GT v2.",
+  "P1-research-market": {
+    "detected": [
+      "F-T3-OVERLAP",
+      "F-CONFLICT",
+      "F-C1-CONSTRAINT-DROP"
+    ],
+    "false_positives": [],
+    "notes": "Dropped all v1 schema FPs. Missed C3-VAGUE."
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-PROVSTARVE",
+      "F-NOPROV",
+      "F-NOCONF"
+    ],
+    "false_positives": [],
+    "notes": "NOCONF is FP vs GT v2 (rule-borderline: estimates). Over-suppressed: MISSED LATENTDEP and COVHOLE."
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-LATENTDEP",
+      "F-C1-CONSTRAINT-DROP"
+    ],
+    "false_positives": [],
+    "notes": "Clean 3/3, dropped the v1 NOCONF FP."
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-RUNAWAY"
+    ],
+    "false_positives": [],
+    "notes": "Over-suppressed: missed CONFLICT and T5. Raised a date-dependency point (OTHER, not scored)."
+  },
+  "P5-research-wellformed": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "Control clean."
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-LATENTDEP"
+    ],
+    "false_positives": [],
+    "notes": "Over-suppressed: missed the backward-compat C1 constraint it caught ungated."
+  }
+}

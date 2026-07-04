@@ -1,0 +1,59 @@
+{
+  "P1-research-market": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-C1-CONSTRAINT-DROP",
+      "F-NOPROV"
+    ],
+    "false_positives": []
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-C3-VAGUE",
+      "F-NOPROV",
+      "F-NOCONF",
+      "F-COVHOLE",
+      "F-RUNAWAY"
+    ],
+    "false_positives": []
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-C1-CONSTRAINT-DROP",
+      "F-NOPROV",
+      "F-NOCONF",
+      "F-COVHOLE"
+    ],
+    "false_positives": []
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-C3-VAGUE",
+      "F-NOPROV",
+      "F-NOCONF",
+      "F-COVHOLE"
+    ],
+    "false_positives": []
+  },
+  "P5-research-wellformed": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-C1-CONSTRAINT-DROP",
+      "F-NOPROV",
+      "F-C3-VAGUE"
+    ],
+    "false_positives": []
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-C1-CONSTRAINT-DROP",
+      "F-NOPROV",
+      "F-NOCONF"
+    ],
+    "false_positives": []
+  }
+}

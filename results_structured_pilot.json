@@ -1,0 +1,57 @@
+{
+  "_protocol": "Condition B (NET-HARMS structured + topology pass). Detector saw corpus_blind.json only. Same mapping rules as freeform.",
+  "P1-research-market": {
+    "detected": [
+      "F-T3-OVERLAP",
+      "F-C3-VAGUE",
+      "F-C1-CONSTRAINT-DROP",
+      "F-NOCONF",
+      "F-CONFLICT"
+    ],
+    "false_positives": [],
+    "notes": "Stage-1 sweep caught overlap, vague objectives, the dropped date constraint (C1) and the missing confidence field (schema audit). Topology: JOIN s4 over overlapping inputs -> conflict-collapse."
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-COVHOLE",
+      "F-NOPROV",
+      "F-PROVSTARVE"
+    ],
+    "false_positives": [],
+    "notes": "Topology pass traced the s1->{s2,s3,s4} dependency inside one parallel wave (latent dep), the verify node starved of provenance, and the fan-out with no coverage reconciliation. Schema audit caught missing sources."
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-T2-OMIT",
+      "F-LATENTDEP",
+      "F-C1-CONSTRAINT-DROP"
+    ],
+    "false_positives": [
+      "F-CORRELATED"
+    ],
+    "notes": "Caught missing contract, the parallel interface dependency, and the unguarded constraints. Over-triggered: flagged a shared-resource/correlated-failure risk across the three packages, which doesn't really apply -- a checklist false positive."
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-RUNAWAY",
+      "F-CONFLICT"
+    ],
+    "false_positives": [],
+    "notes": "Caught unbounded follow-up and the press/social conflict at the join. Missed s1 over-decomposition (T5) -- the vaguest mode, slipped through even the sweep."
+  },
+  "P5-research-wellformed": {
+    "detected": [],
+    "false_positives": [
+      "F-CONFLICT"
+    ],
+    "notes": "Precision cost: the JOIN topology trigger fired a conflict-collapse flag even though synthesis_strategy already surfaces conflicts with sources. One spurious flag on the control plan."
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-LATENTDEP"
+    ],
+    "false_positives": [],
+    "notes": "Topology check 'parallel pair where one needs another's output' caught the needle: s1 depends on s2's config schema, same wave."
+  }
+}

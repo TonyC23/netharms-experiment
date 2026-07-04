@@ -1,0 +1,52 @@
+{
+  "_protocol": "Detector = llama3.1:8b (structured+gated prompt), MAPPER = Claude (hand re-map of results_raw.json). Same convention as freeform handmap.",
+  "P1-research-market": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "llama talked itself OUT of every risk ('No risk present' on join, parallel, schema) and concluded the plan was clean - on a plan with 4 real issues. 0 catches."
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-CONFLICT"
+    ],
+    "false_positives": [],
+    "notes": "Misapplied silent-collapse to s5 (inputs aren't overlapping) = 1 FP. Explicitly DENIED the verify-starvation ('No risk present') and the latent dependency ('no latent dependencies'). 0 real catches."
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-NOPROV",
+      "F-NOCONF",
+      "F-CONFLICT",
+      "F-RUNAWAY"
+    ],
+    "false_positives": [],
+    "notes": "All 4 are FPs vs GT: flagged provenance/confidence on code diffs (gating should suppress), a join-collapse, and RUNAWAY despite follow_up disabled (self-contradictory). Missed all 3 real GT items."
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-CONFLICT",
+      "F-RUNAWAY",
+      "F-NOPROV",
+      "F-NOCONF"
+    ],
+    "false_positives": [],
+    "notes": "Real catches: join silent-collapse (CONFLICT) and unbounded follow-up (RUNAWAY) = 2/3. NOPROV/NOCONF are FPs. Missed T5. NOTE: the llama auto-mapper scored this 0/3 - the strong mapper rescued 2 real catches."
+  },
+  "P5-research-wellformed": {
+    "detected": [
+      "F-CONFLICT",
+      "F-LATENTDEP"
+    ],
+    "false_positives": [],
+    "notes": "CONTROL PLAN. False-alarmed: silent-collapse at s4 (handling present) and a latent dependency between independent laptops s1/s2. 2 FPs. (Did correctly NOT flag provenance/confidence here.)"
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-NOPROV",
+      "F-NOCONF"
+    ],
+    "false_positives": [],
+    "notes": "Caught the needle (s1/s2 coordination = LATENTDEP). NOPROV/NOCONF on code = 2 FPs. Missed C1-DROP."
+  }
+}

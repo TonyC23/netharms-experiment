@@ -1,0 +1,52 @@
+{
+  "_protocol": "Gated structured, GATE #2 (gate scoped to completeness items ONLY; structural risks never suppressed). Cold instance, blind, no file access. Scored against GT v2.",
+  "P1-research-market": {
+    "detected": [
+      "F-T3-OVERLAP",
+      "F-C1-CONSTRAINT-DROP",
+      "F-CONFLICT"
+    ],
+    "false_positives": [],
+    "notes": "3/4. Folded provenance into the conflict finding (no standalone NOPROV FP). Missed C3-VAGUE (persistent blind spot)."
+  },
+  "P2-research-policy": {
+    "detected": [
+      "F-PROVSTARVE",
+      "F-NOPROV",
+      "F-LATENTDEP"
+    ],
+    "false_positives": [],
+    "notes": "Recovered LATENTDEP that gate#1 dropped. Missed COVHOLE. No FP."
+  },
+  "P3-coding-refactor": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-T2-OMIT",
+      "F-C1-CONSTRAINT-DROP"
+    ],
+    "false_positives": [],
+    "notes": "Clean 3/3."
+  },
+  "P4-research-news": {
+    "detected": [
+      "F-RUNAWAY",
+      "F-T5-OVERKILL",
+      "F-CONFLICT"
+    ],
+    "false_positives": [],
+    "notes": "3/3 - recovered CONFLICT and even caught T5-OVERKILL (which nothing else did)."
+  },
+  "P5-research-wellformed": {
+    "detected": [],
+    "false_positives": [],
+    "notes": "Control clean - no over-flag."
+  },
+  "P6-coding-needle": {
+    "detected": [
+      "F-LATENTDEP",
+      "F-C1-CONSTRAINT-DROP"
+    ],
+    "false_positives": [],
+    "notes": "2/2 - recovered the backward-compat constraint."
+  }
+}
