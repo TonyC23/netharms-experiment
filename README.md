@@ -3,6 +3,7 @@
 ### A systems-thinking pre-flight check for AI agent workflows — concept note
 
 *Draft for discussion — June 2026*
+
 *Tony Carden tony.carden@gmail.com*
 
 ---
